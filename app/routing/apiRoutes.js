@@ -49,10 +49,11 @@ module.exports = function(app) {
     
     app.post("/api/friends", function(req, res) {
         // handle incoming survey results
-        friends.push(req.body)
+        var user = req.body;
+        friends.push(user)
         
         // handle compatibility logic.
-        findMatch(user, friends)
+        res.json(findMatch(user, friends))
     })
 
 }
