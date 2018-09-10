@@ -1,18 +1,10 @@
-app.get("/api/friends", function(req, res) {
-    // display json of all friends added to the database
-});
-
-app.post("/api/friends", function(req, res) {
-    // handle incoming survey results
-    // handle compatibility logic.
-    findMatch(user, friends)
-})
+var friends = require("../data/friends")
 
 function findMatch(profile, array) {
     // Set array for the compatability with each existing user, in order.
     var compatArray = [];
-    // Go through each existing user
-    for (let i = 0; i < array.length; i++) {
+    // Go through each existing user (one less than array's new length)
+    for (let i = 0; i < array.length - 1; i++) {
         var compScores = array[i].scores;
         var compIndex = 0;
         // for each question, calculate the difference in score
@@ -45,5 +37,22 @@ function findMatch(profile, array) {
 
     // Returns the object of the chosen friend.
     return array[matchNum]
-    // Determine if we want to do something with additional matches
+    // Determine if we want to do something with the array of additional matches we sent.
+}
+
+module.exports = function(app) {
+
+    app.get("/api/friends", function(req, res) {
+        // display json of all friends added to the database
+        res.json(friends)
+    });
+    
+    app.post("/api/friends", function(req, res) {
+        // handle incoming survey results
+        friends.push(req.body)
+        
+        // handle compatibility logic.
+        findMatch(user, friends)
+    })
+
 }
